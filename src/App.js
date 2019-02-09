@@ -10,8 +10,8 @@ class App extends Component {
   state = {
     weather: null,
     city: null,
-    error: false,
-    isLoading: false
+    isLoading: false,
+    error: false
   };
 
   weatherHandler = event => {

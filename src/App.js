@@ -1,25 +1,57 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+
+import API from "./utils/API";
+
+import Input from "./components/Form/Input";
+import Weather from "./components/Weather/Weather";
 
 class App extends Component {
+  state = {
+    weather: null,
+    city: null,
+    isLoading: false,
+    error: false
+  };
+
+  weatherHandler = event => {
+    event.preventDefault();
+    // Resets weather and error states.
+    this.setState({ isLoading: true, weather: null, error: false });
+    API.getWeather(this.state.city)
+      .then(result => {
+        this.setState({ weather: result.data, isLoading: false });
+      })
+      .catch(error => {
+        this.setState({ isLoading: false, error: true });
+      });
+  };
+
+  handleInputChange = event => {
+    const { name, value } = event.target;
+    this.setState({
+      [name]: value
+    });
+  };
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <form action="/" method="post" onSubmit={this.weatherHandler}>
+          <Input
+            name="city"
+            type="text"
+            className="ghost-input"
+            placeholder="Enter a City"
+            onChange={this.handleInputChange}
+            required
+          />
+          <Input type="submit" className="ghost-button" value="Get Weather" />
+        </form>
+        {this.state.weather && !this.state.isLoading ? (
+          <Weather weather={this.state.weather} />
+        ) : null}
+        {this.state.error ? <p>City not found!</p> : null}
       </div>
     );
   }

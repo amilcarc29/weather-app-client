@@ -9,7 +9,7 @@ import Weather from "./components/Weather/Weather";
 class App extends Component {
   state = {
     weather: null,
-    city: null,
+    city: "",
     isLoading: false,
     error: false
   };

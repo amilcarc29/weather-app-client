@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 
-import API from "./utils/API";
-
 import Input from "./components/Form/Input";
 import Weather from "./components/Weather/Weather";
 
@@ -15,17 +13,21 @@ class App extends Component {
   };
 
   componentDidMount() {
-    event.preventDefault();
     // Resets weather and error states.
     this.setState({ isLoading: true, weather: null, error: false });
-    API.getWeather(this.state.city)
+    fetch("/search-location-weather/Buenos Aires")
+      .then(res => res.json())
       .then(result => {
-        this.setState({ weather: result.data, isLoading: false });
+        if (result.data.cod === "404") {
+          this.setState({ isLoading: false, error: true });
+        } else {
+          this.setState({ weather: result.data, isLoading: false });
+        }
       })
       .catch(error => {
         this.setState({ isLoading: false, error: true });
       });
-  };
+  }
 
   handleInputChange = event => {
     const { name, value } = event.target;
@@ -37,7 +39,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <form action="/" method="post" onSubmit={this.weatherHandler}>
+        <form action="/search-location" method="post">
           <Input
             name="city"
             type="text"

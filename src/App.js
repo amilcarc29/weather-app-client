@@ -14,7 +14,7 @@ class App extends Component {
     error: false
   };
 
-  weatherHandler = event => {
+  componentDidMount() {
     event.preventDefault();
     // Resets weather and error states.
     this.setState({ isLoading: true, weather: null, error: false });

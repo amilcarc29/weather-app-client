@@ -15,7 +15,7 @@ class App extends Component {
   componentDidMount() {
     // Resets weather and error states.
     this.setState({ isLoading: true, weather: null, error: false });
-    fetch("/search-location-weather/Buenos Aires")
+    fetch("/search-location-weather")
       .then(res => res.json())
       .then(result => {
         if (result.data.cod === "404") {

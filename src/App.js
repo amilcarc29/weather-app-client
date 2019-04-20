@@ -19,7 +19,11 @@ class App extends Component {
       .then(res => res.json())
       .then(result => {
         if (result.data.cod === "404") {
-          this.setState({ isLoading: false, error: true });
+          this.setState({
+            weather: result.data,
+            isLoading: false,
+            error: true
+          });
         } else {
           this.setState({ weather: result.data, isLoading: false });
         }
@@ -50,10 +54,10 @@ class App extends Component {
           />
           <Input type="submit" className="ghost-button" value="Get Weather" />
         </form>
+        <br />
         {this.state.weather && !this.state.isLoading ? (
-          <Weather weather={this.state.weather} />
+          <Weather weather={this.state.weather} error={this.state.error} />
         ) : null}
-        {this.state.error ? <p>City not found!</p> : null}
       </div>
     );
   }

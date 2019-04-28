@@ -3,6 +3,7 @@ import "./App.css";
 
 import Input from "./components/Form/Input";
 import Weather from "./components/Weather/Weather";
+import AutocompleteInput from "./components/Autocomplete/AutocompleteInput";
 
 class App extends Component {
   state = {
@@ -33,10 +34,9 @@ class App extends Component {
       });
   }
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
+  handleInputChange = value => {
     this.setState({
-      [name]: value
+      city: value
     });
   };
 
@@ -44,14 +44,7 @@ class App extends Component {
     return (
       <div className="App">
         <form action="/search-location" method="post">
-          <Input
-            name="city"
-            type="text"
-            className="ghost-input"
-            placeholder="Enter a City"
-            onChange={this.handleInputChange}
-            required
-          />
+          <AutocompleteInput changed={this.handleInputChange} />
           <Input type="submit" className="ghost-button" value="Get Weather" />
         </form>
         <br />

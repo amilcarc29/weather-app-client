@@ -6,14 +6,17 @@ const Rainy = "/assets/rainy.svg";
 const Snowy = "/assets/snowy.svg";
 const Sunny = "/assets/sunny.svg";
 const Thunderstorm = "/assets/thunderstorm.svg";
+const NotFound = "/assets/notfound.svg";
 
 const Weather = props => {
   // FIXME: Better error handler.
 
-  let weatherId = props.weather.weather[0].id;
+  let weatherId = props.error ? 404 : props.weather.weather[0].id;
   let weatherIcon = null;
 
-  if (weatherId <= 232) {
+  if (weatherId === 404) {
+    weatherIcon = NotFound;
+  } else if (weatherId <= 232) {
     // Thunderstorm
     weatherIcon = Thunderstorm;
   } else if (weatherId >= 300 && weatherId <= 531) {
@@ -30,13 +33,13 @@ const Weather = props => {
     weatherIcon = Cloudy;
   }
 
-  return props.error ? (
-    <p>City not found!</p>
-  ) : (
+  return (
     <div>
       <img src={process.env.PUBLIC_URL + weatherIcon} alt="Weather icon" />
       <p>
-        It's {props.weather.main.temp}º in {props.weather.name}!
+        {props.error
+          ? "City not found"
+          : `It ${props.weather.main.temp}º in ${props.weather.name}!`}
       </p>
     </div>
   );
